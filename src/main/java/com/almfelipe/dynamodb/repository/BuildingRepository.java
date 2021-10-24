@@ -8,6 +8,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,6 +17,7 @@ public class BuildingRepository {
 
     @Autowired
     private DynamoDbEnhancedClient dynamoDbEnhancedClient;
+    private static final String TABLE_NAME = "building";
 
     public List<BuildingEntity> findAll() {
         var pageIterable = getTable().scan();
@@ -23,22 +25,23 @@ public class BuildingRepository {
     }
 
     public void save(BuildingEntity buildingEntity){
-        try {
-            this.getTable().putItem(buildingEntity);
-        }catch(Exception e){
-         e.printStackTrace();
-        }
+        buildingEntity.setUpdatedAt(LocalDateTime.now());
+        this.getTable().putItem(buildingEntity);
     }
 
     public void delete(BuildingEntity buildingEntity){
+        this.delete(buildingEntity.getStreetHashKey(), buildingEntity.getNumberRangeKey());
+    }
+
+    public void delete(String hashKey, String rangeKey){
         this.getTable().deleteItem(Key.builder()
-                .partitionValue(buildingEntity.getStreetHashKey())
-                .sortValue(buildingEntity.getNumberRangeKey())
+                .partitionValue(hashKey)
+                .sortValue(rangeKey)
                 .build());
     }
 
     private DynamoDbTable<BuildingEntity> getTable(){
-        return dynamoDbEnhancedClient.table("building", TableSchema.fromBean(BuildingEntity.class));
+        return dynamoDbEnhancedClient.table(TABLE_NAME, TableSchema.fromBean(BuildingEntity.class));
     }
 
 }
