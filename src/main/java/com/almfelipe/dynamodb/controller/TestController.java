@@ -1,6 +1,7 @@
 package com.almfelipe.dynamodb.controller;
 
 import com.almfelipe.dynamodb.model.entity.BuildingEntity;
+import com.almfelipe.dynamodb.model.entity.BuildingType;
 import com.almfelipe.dynamodb.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,13 +23,12 @@ public class TestController {
     public ResponseEntity<List<BuildingEntity>> start(){
 
         final var buildingEntityList = repository.findAll();
-
         buildingEntityList.forEach(buildingEntity -> repository.delete(buildingEntity));
 
         repository.save(BuildingEntity.builder()
                         .streetHashKey("salvador#ba#costa azul#rua doutor augusto lopes pontes")
                         .numberRangeKey("477")
-                        .buildingType("residential")
+                        .buildingType(BuildingType.RESIDENTIAL.name())
                         .buildDate(LocalDate.now().toString())
                         .forSale(true)
                         .area(70)
@@ -38,13 +38,28 @@ public class TestController {
         repository.save(BuildingEntity.builder()
                 .streetHashKey("salvador#ba#pituba#avenida paulo vi")
                 .numberRangeKey("2200")
-                .buildingType("residential")
+                .buildingType(BuildingType.RESIDENTIAL.name())
                 .buildDate(LocalDate.now().toString())
                 .forSale(false)
                 .area(120)
                 .price(BigDecimal.valueOf(800000.40))
                 .build());
 
+        repository.save(BuildingEntity.builder()
+                .streetHashKey("petrolina#pe#vale dourado#rua dom tomaz")
+                .numberRangeKey("80")
+                .buildingType(BuildingType.RESIDENTIAL.name())
+                .buildDate(LocalDate.now().toString())
+                .forSale(false)
+                .area(120)
+                .price(BigDecimal.valueOf(290000.00))
+                .build());
+
+        return this.findAll();
+    }
+
+    @GetMapping("findall")
+    public ResponseEntity<List<BuildingEntity>> findAll(){
         return new ResponseEntity<>(repository.findAll(), HttpStatus.OK) ;
     }
 
