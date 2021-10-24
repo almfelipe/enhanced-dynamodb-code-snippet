@@ -1,7 +1,7 @@
 package com.almfelipe.dynamodb.controller;
 
 import com.almfelipe.dynamodb.model.entity.BuildingEntity;
-import com.almfelipe.dynamodb.model.entity.BuildingType;
+import com.almfelipe.dynamodb.model.type.BuildingType;
 import com.almfelipe.dynamodb.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
