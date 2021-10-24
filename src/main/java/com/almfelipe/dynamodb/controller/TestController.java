@@ -51,7 +51,7 @@ public class TestController {
                 .buildingType(BuildingType.RESIDENTIAL)
                 .buildDate(LocalDate.now().minusYears(5))
                 .forSale(false)
-                .area(120)
+                .area(200)
                 .price(BigDecimal.valueOf(290000.00))
                 .build());
 
