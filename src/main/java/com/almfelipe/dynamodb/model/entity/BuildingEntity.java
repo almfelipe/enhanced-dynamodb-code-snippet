@@ -33,18 +33,10 @@ public class BuildingEntity {
         return streetHashKey;
     }
 
-    public void setStreetHashKey(String streetHashKey) {
-        this.streetHashKey = streetHashKey;
-    }
-
     @DynamoDbSortKey
     @DynamoDbAttribute("numberRangeKey")
     public String getNumberRangeKey() {
         return numberRangeKey;
-    }
-
-    public void setNumberRangeKey(String numberRangeKey) {
-        this.numberRangeKey = numberRangeKey;
     }
 
     @DynamoDbSecondaryPartitionKey(indexNames = "GSI_building_type")
@@ -53,25 +45,13 @@ public class BuildingEntity {
         return buildingType;
     }
 
-    public void setBuildingType(BuildingType buildingType) {
-        this.buildingType = buildingType;
-    }
-
     @DynamoDbSecondaryPartitionKey(indexNames = "GSI_build_date")
     @DynamoDbAttribute("buildDate")
     public LocalDate getBuildDate() { return buildDate; }
 
-    public void setBuildDate(LocalDate buildDate) {
-        this.buildDate = buildDate;
-    }
-
     @DynamoDbAttribute("forSale")
     public boolean getForSale() {
         return forSale;
-    }
-
-    public void setForSale(boolean forSale) {
-        this.forSale = forSale;
     }
 
     @DynamoDbSecondaryPartitionKey(indexNames = "GSI_area")
@@ -80,24 +60,12 @@ public class BuildingEntity {
         return area;
     }
 
-    public void setArea(int area) {
-        this.area = area;
-    }
-
     @DynamoDbSecondaryPartitionKey(indexNames = "GSI_price")
     @DynamoDbAttribute("price")
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     @DynamoDbAttribute("updatedAt")
     public LocalDateTime getUpdatedAt() { return this.updatedAt; }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
