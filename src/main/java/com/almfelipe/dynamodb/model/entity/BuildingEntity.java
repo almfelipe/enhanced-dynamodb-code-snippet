@@ -1,5 +1,6 @@
 package com.almfelipe.dynamodb.model.entity;
 
+import com.almfelipe.dynamodb.model.type.BuildingType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.Setter;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @Setter
@@ -17,11 +20,12 @@ public class BuildingEntity {
 
     private String streetHashKey;
     private String numberRangeKey;
-    private String buildingType;
-    private String buildDate;
+    private BuildingType buildingType;
+    private LocalDate buildDate;
     private boolean forSale;
     private int area;
     private BigDecimal price;
+    private LocalDateTime updatedAt;
 
     @DynamoDbPartitionKey
     @DynamoDbAttribute("streetHashKey")
@@ -45,19 +49,19 @@ public class BuildingEntity {
 
     @DynamoDbSecondaryPartitionKey(indexNames = "GSI_building_type")
     @DynamoDbAttribute("buildingType")
-    public String getBuildingType() {
+    public BuildingType getBuildingType() {
         return buildingType;
     }
 
-    public void setBuildingType(String buildingType) {
+    public void setBuildingType(BuildingType buildingType) {
         this.buildingType = buildingType;
     }
 
     @DynamoDbSecondaryPartitionKey(indexNames = "GSI_build_date")
     @DynamoDbAttribute("buildDate")
-    public String getBuildDate() { return buildDate; }
+    public LocalDate getBuildDate() { return buildDate; }
 
-    public void setBuildDate(String buildDate) {
+    public void setBuildDate(LocalDate buildDate) {
         this.buildDate = buildDate;
     }
 
@@ -88,5 +92,12 @@ public class BuildingEntity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    @DynamoDbAttribute("updatedAt")
+    public LocalDateTime getUpdatedAt() { return this.updatedAt; }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
