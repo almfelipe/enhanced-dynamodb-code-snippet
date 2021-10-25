@@ -28,16 +28,24 @@ public class BuildingRepository {
         return pageIterable.items().stream().collect(Collectors.toList());
     }
 
-    public void save(BuildingEntity buildingEntity){
+    public void save(List<BuildingEntity> entities) {
+        entities.parallelStream().forEach( this::save );
+    }
+
+    private void save(BuildingEntity buildingEntity){
         buildingEntity.setUpdatedAt(LocalDateTime.now());
         this.getTable().putItem(buildingEntity);
     }
 
-    public void delete(BuildingEntity buildingEntity){
+    public void delete(List<BuildingEntity> entities){
+        entities.parallelStream().forEach( this::delete );
+    }
+
+    private void delete(BuildingEntity buildingEntity){
         this.delete(buildingEntity.getStreetHashKey(), buildingEntity.getNumberRangeKey());
     }
 
-    public void delete(String hashKey, String rangeKey){
+    private void delete(String hashKey, String rangeKey){
         this.getTable().deleteItem(Key.builder()
                 .partitionValue(hashKey)
                 .sortValue(rangeKey)
@@ -46,7 +54,7 @@ public class BuildingRepository {
 
     public void writeBatch(List<BuildingEntity> entities) {
         final var partitions = ListUtils.splitList(entities, MAX_BATCH_SIZE_OPERATION);
-        partitions.forEach( this::writeBatch25 );
+        partitions.parallelStream().forEach( this::writeBatch25 );
     }
 
     private void writeBatch25(List<BuildingEntity> entities){

@@ -23,8 +23,7 @@ public class TestController {
     private BuildingRepository repository;
 
     private void clearDb(){
-        final var buildingEntityList = repository.findAll();
-        buildingEntityList.forEach(buildingEntity -> repository.delete(buildingEntity));
+        repository.delete(repository.findAll());
     }
 
     private List<BuildingEntity> getInitialBuildings(){
@@ -90,7 +89,7 @@ public class TestController {
 
         this.clearDb();
         startWrite = LocalDateTime.now();
-        buildingEntityList.forEach( e -> repository.save(e));
+        repository.save(buildingEntityList);
         endWrite = LocalDateTime.now();
         final var saveTime = ChronoUnit.NANOS.between(startWrite, endWrite);
 
